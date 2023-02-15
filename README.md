@@ -20,7 +20,7 @@
 
 
 
-## SETTINGS FOR SEMBANCH ACTION
+## SETTINGS FOR SEMBENCH ACTION
 
 ### available paths:
     - ${DATA_LOCATION} => path to datacrate where the action grab data for its tasks
