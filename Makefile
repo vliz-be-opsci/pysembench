@@ -1,13 +1,32 @@
-SHELL := /bin/bash
-PYTHON = python3
-TEST_PATH = ./tests/
-init:
-	@pip install --upgrade pip
-	@pip install -e .
-	#@pip install -r requirements.txt -U   #we need this explicit variant wheb using unreleased -e dependencies - to keep automatic testing happy
+PROJECT = pysembench
+AUTHOR = bulricht
 
-init-dev: init
-	@pip install -e .[dev]
+.PHONY: build docs format install jupyter publish run tests
 
-test:
-	@${PYTHON} -m pytest ${TEST_PATH} --disable-warnings
+build: install format tests docs
+	poetry build
+
+docs:
+	if ! [ -d "./docs" ]; then poetry run sphinx-quickstart -q --ext-autodoc --sep --project $(PROJECT) --author $(AUTHOR) docs; fi
+	poetry run sphinx-apidoc -o ./docs/source ./pysembench
+	poetry run sphinx-build -b html ./docs/source ./docs/build/html
+
+format:
+	poetry run isort .
+	poetry run black --line-length 79 .
+	poetry run flake8 .
+
+install:
+	poetry install
+
+jupyter:
+	poetry run jupyter notebook
+
+publish: build
+	poetry publish
+
+run:
+	poetry run python -m $(PROJECT)
+
+tests:
+	poetry run pytest
