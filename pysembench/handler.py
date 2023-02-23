@@ -62,7 +62,7 @@ class PysubytHandler(TaskHandler):
             f"--mode {mode}"
         )
         logger.info(f"subprocess call; {cmd}")
-        subprocess.check_call(cmd)
+        subprocess.check_call(cmd, shell=True)
         return cmd
 
 
