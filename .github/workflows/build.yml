@@ -16,21 +16,13 @@ jobs:
       with:
         python-version: 3.x
     - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        poetry-version: 1.1.4
+      run: pip install poetry
     - name: Install dependencies
       run: |
         make install
     - name: Run tests
       run: |
         make tests     
-    - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@1.36.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: true
-        DEFAULT_BUMP: patch
     - name: change latest tag
       uses: EndBug/latest-tag@latest
       env:
