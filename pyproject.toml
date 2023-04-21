@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 pysubyt = {git = "https://github.com/vliz-be-opsci/pysubyt.git", rev = "main"}
+pyshacl = "^0.22.0"
 
 
 [tool.poetry.group.dev.dependencies]

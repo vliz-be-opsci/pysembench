@@ -19,9 +19,6 @@ format:
 install:
 	poetry install
 
-jupyter:
-	poetry run jupyter notebook
-
 publish: build
 	poetry publish
 

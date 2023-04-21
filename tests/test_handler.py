@@ -20,6 +20,7 @@ class TestPysubytHandler(TestCase):
         template_jinja_root = ["TEMPLATE_JINJA_ROOT"]
         template_file_name = ["TEMPLATE_FILE_NAME"]
         sets = [None, {"SET_KEY_1": "SET_VALUE_1", "SET_KEY_2": "SET_VALUE_2"}]
+        variables = [None, {"VARIABLE_KEY_1": "VARIABLE_VALUE_1", "VARIABLE_KEY_2": "VARIABLE_VALUE_2"}]
         mode = [None, "MODE"]
 
         grid = list(
@@ -30,6 +31,7 @@ class TestPysubytHandler(TestCase):
                 template_jinja_root,
                 template_file_name,
                 sets,
+                variables,
                 mode,
             )
         )
@@ -45,7 +47,8 @@ class TestPysubytHandler(TestCase):
                     "output": g[2],
                     "template": {"jinja_root": g[3], "file_name": g[4]},
                     "sets": g[5],
-                    "mode": g[6],
+                    "variables": g[6],
+                    "mode": g[7],
                 },
                 g[0],
             )
@@ -56,21 +59,42 @@ class TestPysubytHandler(TestCase):
 
         actual = list(map(PysubytHandler().handle, tasks))
         expected = [
-            f"pysubyt   --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --mode iteration",  # noqa
-            f"pysubyt   --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --mode MODE",  # noqa
-            f"pysubyt   --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --set SET_KEY_1 .{os.path.sep}SET_VALUE_1 --set SET_KEY_2 .{os.path.sep}SET_VALUE_2 --mode iteration",  # noqa
-            f"pysubyt   --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --set SET_KEY_1 .{os.path.sep}SET_VALUE_1 --set SET_KEY_2 .{os.path.sep}SET_VALUE_2 --mode MODE",  # noqa
-            f"pysubyt  --input .{os.path.sep}INPUT --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --mode iteration",  # noqa
-            f"pysubyt  --input .{os.path.sep}INPUT --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --mode MODE",  # noqa
-            f"pysubyt  --input .{os.path.sep}INPUT --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --set SET_KEY_1 .{os.path.sep}SET_VALUE_1 --set SET_KEY_2 .{os.path.sep}SET_VALUE_2 --mode iteration",  # noqa
-            f"pysubyt  --input .{os.path.sep}INPUT --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --set SET_KEY_1 .{os.path.sep}SET_VALUE_1 --set SET_KEY_2 .{os.path.sep}SET_VALUE_2 --mode MODE",  # noqa
-            f"pysubyt --force  --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --mode iteration",  # noqa
-            f"pysubyt --force  --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --mode MODE",  # noqa
-            f"pysubyt --force  --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --set SET_KEY_1 .{os.path.sep}SET_VALUE_1 --set SET_KEY_2 .{os.path.sep}SET_VALUE_2 --mode iteration",  # noqa
-            f"pysubyt --force  --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --set SET_KEY_1 .{os.path.sep}SET_VALUE_1 --set SET_KEY_2 .{os.path.sep}SET_VALUE_2 --mode MODE",  # noqa
-            f"pysubyt --force --input .{os.path.sep}INPUT --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --mode iteration",  # noqa
-            f"pysubyt --force --input .{os.path.sep}INPUT --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --mode MODE",  # noqa
-            f"pysubyt --force --input .{os.path.sep}INPUT --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --set SET_KEY_1 .{os.path.sep}SET_VALUE_1 --set SET_KEY_2 .{os.path.sep}SET_VALUE_2 --mode iteration",  # noqa
-            f"pysubyt --force --input .{os.path.sep}INPUT --output .{os.path.sep}OUTPUT --templates .{os.path.sep}TEMPLATE_JINJA_ROOT --name TEMPLATE_FILE_NAME --set SET_KEY_1 .{os.path.sep}SET_VALUE_1 --set SET_KEY_2 .{os.path.sep}SET_VALUE_2 --mode MODE",  # noqa
+            f'pysubyt   --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --mode "iteration"',  # noqa
+            f'pysubyt   --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --mode "MODE"',  # noqa
+            f'pysubyt   --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt   --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt   --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt   --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt   --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt   --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt  --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --mode "iteration"',  # noqa
+            f'pysubyt  --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --mode "MODE"',  # noqa
+            f'pysubyt  --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt  --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt  --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt  --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt  --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt  --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt --force  --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --mode "iteration"',  # noqa
+            f'pysubyt --force  --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --mode "MODE"',  # noqa
+            f'pysubyt --force  --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt --force  --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt --force  --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt --force  --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt --force  --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt --force  --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt --force --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --mode "iteration"',  # noqa
+            f'pysubyt --force --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --mode "MODE"',  # noqa
+            f'pysubyt --force --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt --force --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt --force --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt --force --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --mode "MODE"',  # noqa
+            f'pysubyt --force --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "iteration"',  # noqa
+            f'pysubyt --force --input ".{os.path.sep}INPUT" --output ".{os.path.sep}OUTPUT" --templates ".{os.path.sep}TEMPLATE_JINJA_ROOT" --name "TEMPLATE_FILE_NAME" --set "SET_KEY_1" ".{os.path.sep}SET_VALUE_1" --set "SET_KEY_2" ".{os.path.sep}SET_VALUE_2" --var "VARIABLE_KEY_1" "VARIABLE_VALUE_1" --var "VARIABLE_KEY_2" "VARIABLE_VALUE_2" --mode "MODE"',  # noqa
         ]
         self.assertEqual(actual, expected)
+
+
+class TestPyshaclHandler(TestCase):
+    def test_handle(self):
+        ...

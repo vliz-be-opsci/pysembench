@@ -1,9 +1,10 @@
-from .handler import PysubytHandler
+from .handler import PysubytHandler, PyshaclHandler
 
 
 class TaskDispatcher:
     type_to_handler = {
         "pysubyt": PysubytHandler,
+        "pyshacl": PyshaclHandler,
     }
 
     def dispatch(self, task):
