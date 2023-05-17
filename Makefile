@@ -30,3 +30,13 @@ run:
 
 tests:
 	poetry run pytest
+
+init:
+	pip install --upgrade pip
+	which poetry >/dev/null || pip install poetry
+	poetry install
+	poetry run pre-commit install
+	poetry run pre-commit install --hook-type commit-msg
+
+init-dev: init
+	poetry install --extras 'dev'
