@@ -40,3 +40,8 @@ init:
 
 init-dev: init
 	poetry install --extras 'dev'
+
+check:
+	poetry run black --check --diff .
+	poetry run isort --check --diff .
+	poetry run flake8 . --exclude ${FLAKE8_EXCLUDE}
