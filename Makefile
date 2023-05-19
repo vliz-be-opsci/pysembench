@@ -1,5 +1,6 @@
 PROJECT = pysembench
 AUTHOR = bulricht
+FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
 
 .PHONY: build docs format install jupyter publish run tests
 
