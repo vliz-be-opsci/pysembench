@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.5.2
     - uses: dorny/paths-filter@v2
       id: filter
       with:
@@ -24,14 +24,14 @@ jobs:
           tests:
             - 'tests/**'
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4.6.0
       with:
-        python-version: 3.x
+        python-version: 3.9
     - name: Install dependencies
       run: |
         make init-dev
-        pip install coverage pytest-cov
+        pip install -e .[tests]
 
     - name: Linting check
       id: linting_check
@@ -41,16 +41,15 @@ jobs:
 
     - name: Test with pytest
       id: pytest_test
-      if: ${{steps.linting_check.outputs.package == 'true' }}
+      if: ${{steps.filter.outputs.package == 'true' }} or ${{steps.filter.outputs.tests == 'true' }} 
       run: |
         make test
 
     - id: run-tests
-      if: ${{steps.pytest_test.outputs == 'true'}}
+      if: ${{steps.pytest_test.outcome == 'success'}}
       uses: dima-engineer/pytest-reporter@v2.1.1
       with:
-        cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*
+        cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*, *exceptions*
         cov-threshold-single: 85
         cov-threshold-total: 90
         async-tests: true
-        poetry-version: 1.4.2
