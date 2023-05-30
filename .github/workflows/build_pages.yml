@@ -47,5 +47,5 @@ jobs:
           cov-threshold-total: 90
           async-tests: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          working_branch: gh_pages
+          working_branch: gh-pages
           commit_badge: true
