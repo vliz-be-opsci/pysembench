@@ -31,7 +31,7 @@ sphinx = {version = "^7.0.1", optional = true}
 #   compatible with extras, widely used in the python-verse.
 [tool.poetry.extras]
 dev = ["pre-commit", "isort", "black", "flake8"]
-tests = ["pyyaml","pytest", "coverage", "python-dotenv"]
+tests = ["pyyaml","pytest", "coverage", "python-dotenv", "pytest-cov"]
 docs = ["sphinx"]
 
 [build-system]
