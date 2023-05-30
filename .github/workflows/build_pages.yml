@@ -37,3 +37,15 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/build/html 
+
+      - name: Coverage Badge
+        if: ${{steps.filter.outputs.package == 'true' }}
+        uses: JotaFan/pycoverage@v1.1.0
+        with:
+          cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*, *exceptions*
+          cov-threshold-single: 85
+          cov-threshold-total: 90
+          async-tests: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          working_branch: gh_pages
+          commit_badge: true
