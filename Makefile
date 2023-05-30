@@ -52,7 +52,7 @@ lint-fix:
 	poetry run isort .
 
 docker-build:
-	docker build . -t pykg2tbl
+	docker build . -t $(PROJECT)
 
 
 update:
