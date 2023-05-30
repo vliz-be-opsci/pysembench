@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pysembench package &#8212; pysembench  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pysembench-package">
+<h1>pysembench package<a class="headerlink" href="#pysembench-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-pysembench.core">
+<span id="pysembench-core-module"></span><h2>pysembench.core module<a class="headerlink" href="#module-pysembench.core" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.core.Sembench">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.core.</span></span><span class="sig-name descname"><span class="pre">Sembench</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data_location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_data_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sembench_data_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sembench_config_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sembench_config_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.core.Sembench" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysembench.core.Sembench.dispatch_task">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dispatch_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.core.Sembench.dispatch_task" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysembench.core.Sembench.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.core.Sembench.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysembench.dispatcher">
+<span id="pysembench-dispatcher-module"></span><h2>pysembench.dispatcher module<a class="headerlink" href="#module-pysembench.dispatcher" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.dispatcher.TaskDispatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.dispatcher.</span></span><span class="sig-name descname"><span class="pre">TaskDispatcher</span></span><a class="headerlink" href="#pysembench.dispatcher.TaskDispatcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysembench.dispatcher.TaskDispatcher.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.dispatcher.TaskDispatcher.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysembench.dispatcher.TaskDispatcher.type_to_handler">
+<span class="sig-name descname"><span class="pre">type_to_handler</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'pysubyt':</span> <span class="pre">&lt;class</span> <span class="pre">'pysembench.handler.PysubytHandler'&gt;}</span></em><a class="headerlink" href="#pysembench.dispatcher.TaskDispatcher.type_to_handler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysembench.handler">
+<span id="pysembench-handler-module"></span><h2>pysembench.handler module<a class="headerlink" href="#module-pysembench.handler" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.handler.CSVWHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.handler.</span></span><span class="sig-name descname"><span class="pre">CSVWHandler</span></span><a class="headerlink" href="#pysembench.handler.CSVWHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysembench.handler.TaskHandler" title="pysembench.handler.TaskHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskHandler</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.handler.EyereasonerHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.handler.</span></span><span class="sig-name descname"><span class="pre">EyereasonerHandler</span></span><a class="headerlink" href="#pysembench.handler.EyereasonerHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysembench.handler.TaskHandler" title="pysembench.handler.TaskHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskHandler</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.handler.Pykg2tblHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.handler.</span></span><span class="sig-name descname"><span class="pre">Pykg2tblHandler</span></span><a class="headerlink" href="#pysembench.handler.Pykg2tblHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysembench.handler.TaskHandler" title="pysembench.handler.TaskHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskHandler</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.handler.PysubytHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.handler.</span></span><span class="sig-name descname"><span class="pre">PysubytHandler</span></span><a class="headerlink" href="#pysembench.handler.PysubytHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysembench.handler.TaskHandler" title="pysembench.handler.TaskHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskHandler</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysembench.handler.PysubytHandler.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.handler.PysubytHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a shell command based on the Task attributes and run it
+via a subprocess call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.handler.RMLHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.handler.</span></span><span class="sig-name descname"><span class="pre">RMLHandler</span></span><a class="headerlink" href="#pysembench.handler.RMLHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysembench.handler.TaskHandler" title="pysembench.handler.TaskHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskHandler</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.handler.TaskHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.handler.</span></span><span class="sig-name descname"><span class="pre">TaskHandler</span></span><a class="headerlink" href="#pysembench.handler.TaskHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysembench.handler.TaskHandler.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.handler.TaskHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysembench.task">
+<span id="pysembench-task-module"></span><h2>pysembench.task module<a class="headerlink" href="#module-pysembench.task" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.task.Task">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.task.</span></span><span class="sig-name descname"><span class="pre">Task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data_location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_data_location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sembench_data_location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.task.Task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-pysembench">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pysembench" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pysembench</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, bulricht.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/pysembench.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
