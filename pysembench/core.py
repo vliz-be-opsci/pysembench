@@ -1,8 +1,8 @@
 import json
 import os
 
-from .dispatcher import TaskDispatcher
-from .task import Task
+from pysembench.dispatcher import TaskDispatcher
+from pysembench.task import Task
 
 
 class Sembench:
