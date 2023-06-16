@@ -45,6 +45,7 @@ class PyshaclHandler(TaskHandler):
             "with "
             f"shape graph \"{task.config['shacl_graph']}\""
         )
+        return conforms
 
 
 class PysubytHandler(TaskHandler):

@@ -4,7 +4,7 @@ from itertools import product
 from unittest import TestCase
 from unittest.mock import Mock
 
-from pysembench.handler import PysubytHandler
+from pysembench.handler import PysubytHandler, PyshaclHandler
 from pysembench.task import Task
 
 
@@ -97,4 +97,29 @@ class TestPysubytHandler(TestCase):
 
 class TestPyshaclHandler(TestCase):
     def test_handle(self):
-        ...
+        task = Task(
+                "./tests/resources/input_data",
+                ".",
+                "./tests/resources/sembench_data",
+                {
+                    "type": "pyshacl",
+                    "data_graph": "example_data_conform.ttl",
+                    "shacl_graph": "example_shape.ttl"
+                },
+                True,
+            )
+        self.assertTrue(PyshaclHandler().handle(task))
+
+        task = Task(
+                "./tests/resources/input_data",
+                ".",
+                "./tests/resources/sembench_data",
+                {
+                    "type": "pyshacl",
+                    "data_graph": "example_data_nonconform.ttl",
+                    "shacl_graph": "example_shape.ttl"
+                },
+                True,
+            )
+        with self.assertRaises(AssertionError):
+            PyshaclHandler().handle(task)
