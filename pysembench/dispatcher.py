@@ -10,3 +10,4 @@ class TaskDispatcher:
     def dispatch(self, task):
         handler = self.type_to_handler[task.config["type"].lower()]
         handler().handle(task)
+        return handler
