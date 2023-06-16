@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+
 from pyshacl import validate
 
 logger = logging.getLogger(__name__)
@@ -27,12 +28,10 @@ class PyshaclHandler(TaskHandler):
     def handle(self, task):
         conforms, _, _ = validate(
             data_graph=os.path.join(
-                task.input_data_location,
-                task.config["data_graph"]
+                task.input_data_location, task.config["data_graph"]
             ),
             shacl_graph=os.path.join(
-                task.sembench_data_location,
-                task.config["shacl_graph"]
+                task.sembench_data_location, task.config["shacl_graph"]
             ),
             data_graph_format="ttl",
             shacl_graph_format="ttl",
@@ -55,11 +54,11 @@ class PysubytHandler(TaskHandler):
         """
         input = task.config.get("input") or ""
         if input:
-            input = f'--input "{os.path.join(task.input_data_location, input)}"'
+            input = (
+                f'--input "{os.path.join(task.input_data_location, input)}"'
+            )
 
-        output = os.path.join(
-            task.output_data_location, task.config["output"]
-        )
+        output = os.path.join(task.output_data_location, task.config["output"])
 
         templates = os.path.join(
             task.sembench_data_location, task.config["template"]["jinja_root"]
@@ -80,7 +79,9 @@ class PysubytHandler(TaskHandler):
         if variables:
             variables_buffer = ""
             for variable_key, variable_value in variables.items():
-                variables_buffer += f'--var "{variable_key}" "{variable_value}" '
+                variables_buffer += (
+                    f'--var "{variable_key}" "{variable_value}" '
+                )
             variables = variables_buffer
 
         mode = task.config.get("mode") or "iteration"
@@ -88,11 +89,11 @@ class PysubytHandler(TaskHandler):
         force = "--force" if task.force else ""
 
         cmd = (
-            f'pysubyt {force} '
+            f"pysubyt {force} "
             f'{input} --output "{output}" '
             f'--templates "{templates}" --name "{name}" '
-            f'{sets}'
-            f'{variables}'
+            f"{sets}"
+            f"{variables}"
             f'--mode "{mode}"'
         )
         logger.info(f"subprocess call; {cmd}")

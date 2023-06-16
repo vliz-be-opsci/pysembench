@@ -1,4 +1,4 @@
-from pysembench.handler import PysubytHandler, PyshaclHandler
+from pysembench.handler import PyshaclHandler, PysubytHandler
 
 
 class TaskDispatcher:
