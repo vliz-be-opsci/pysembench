@@ -1,6 +1,7 @@
 import os
 import subprocess
 from itertools import product
+from pathlib import Path
 from unittest import TestCase
 from unittest.mock import Mock
 
@@ -104,9 +105,9 @@ class TestPysubytHandler(TestCase):
 class TestPyshaclHandler(TestCase):
     def test_handle(self):
         task = Task(
-            "./tests/resources/input_data",
-            ".",
-            "./tests/resources/sembench_data",
+            Path("./tests/resources/input_data"),
+            Path("."),
+            Path("./tests/resources/sembench_data"),
             {
                 "type": "pyshacl",
                 "data_graph": "example_data_conform.ttl",
@@ -117,9 +118,9 @@ class TestPyshaclHandler(TestCase):
         self.assertTrue(PyshaclHandler().handle(task))
 
         task = Task(
-            "./tests/resources/input_data",
-            ".",
-            "./tests/resources/sembench_data",
+            Path("./tests/resources/input_data"),
+            Path("."),
+            Path("./tests/resources/sembench_data"),
             {
                 "type": "pyshacl",
                 "data_graph": "example_data_nonconform.ttl",
