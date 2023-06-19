@@ -1,6 +1,5 @@
 import json
 import os
-from multiprocessing import Pool
 
 from pysembench.dispatcher import TaskDispatcher
 from pysembench.task import Task
@@ -71,7 +70,7 @@ class Sembench:
     def dispatch_task(task):
         TaskDispatcher().dispatch(task)
 
-    def process(self, processes=None, force=False):
+    def process(self, force=False):
         tasks = [
             Task(
                 input_data_location=self.input_data_location,
@@ -82,5 +81,5 @@ class Sembench:
             )
             for config in self.configs
         ]
-        with Pool(processes) as p:
-            p.map(self.dispatch_task, tasks)
+        for task in tasks:
+            self.dispatch_task(task)

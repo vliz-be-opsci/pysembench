@@ -12,6 +12,9 @@ The following `sembench.json` config file defines a single task to be run with p
         "sets": {
             "countries": "countries.csv",
         },
+        "variables": {
+            "base_uri": "https://vliz-be-opsci.github.io/"
+        },
         "mode": "no-iteration"
     }
 ]
