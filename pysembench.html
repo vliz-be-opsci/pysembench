@@ -47,7 +47,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysembench.core.Sembench.process">
-<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.core.Sembench.process" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.core.Sembench.process" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -66,7 +66,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysembench.dispatcher.TaskDispatcher.type_to_handler">
-<span class="sig-name descname"><span class="pre">type_to_handler</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'pysubyt':</span> <span class="pre">&lt;class</span> <span class="pre">'pysembench.handler.PysubytHandler'&gt;}</span></em><a class="headerlink" href="#pysembench.dispatcher.TaskDispatcher.type_to_handler" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">type_to_handler</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'pyshacl':</span> <span class="pre">&lt;class</span> <span class="pre">'pysembench.handler.PyshaclHandler'&gt;,</span> <span class="pre">'pysubyt':</span> <span class="pre">&lt;class</span> <span class="pre">'pysembench.handler.PysubytHandler'&gt;}</span></em><a class="headerlink" href="#pysembench.dispatcher.TaskDispatcher.type_to_handler" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -90,6 +90,17 @@
 <dt class="sig sig-object py" id="pysembench.handler.Pykg2tblHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.handler.</span></span><span class="sig-name descname"><span class="pre">Pykg2tblHandler</span></span><a class="headerlink" href="#pysembench.handler.Pykg2tblHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pysembench.handler.TaskHandler" title="pysembench.handler.TaskHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskHandler</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysembench.handler.PyshaclHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysembench.handler.</span></span><span class="sig-name descname"><span class="pre">PyshaclHandler</span></span><a class="headerlink" href="#pysembench.handler.PyshaclHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysembench.handler.TaskHandler" title="pysembench.handler.TaskHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskHandler</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysembench.handler.PyshaclHandler.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysembench.handler.PyshaclHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
