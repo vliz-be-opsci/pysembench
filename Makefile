@@ -15,7 +15,7 @@ clean:
 	@rm -rf .cache
 
 startup:
-	pip install --upgrade pip
+	python -m pip install --upgrade pip
 	which poetry >/dev/null || pip install poetry
 
 install:

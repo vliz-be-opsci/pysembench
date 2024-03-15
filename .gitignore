@@ -21,3 +21,5 @@ __pycache__/
 # python
 .coverage
 .pytest_cache
+
+examples/resources/input_data/data.ttl

@@ -20,18 +20,18 @@ The following `sembench.json` config file defines a single task to be run with p
 ]
 ```
 
-All tasks in the `sembench.json` config file can be processed as follows. Keep in mind to place the `process` method in a `__main__` block, as the tasks are run in parallel.
+All tasks in the `sembench.json` config file can be processed as follows.
 
 ```python
 from pysembench.core import Sembench
 
 sb = Sembench(
-    input_data_location="./tests/resources/input_data",
-    sembench_data_location="./tests/resources/sembench_data",
+    input_data_location="./examples/resources/input_data",
+    sembench_data_location="./examples/resources/sembench_data",
+    force=True
 )
 
-if __name__ == "__main__":
-    sb.process(force=True)
+sb.process()
 ```
 
 <p align="center">
