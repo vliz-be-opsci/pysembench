@@ -1,6 +1,8 @@
 import json
 import os
 
+from apscheduler.schedulers.blocking import BlockingScheduler
+
 from pysembench.dispatcher import TaskDispatcher
 from pysembench.task import Task
 
@@ -13,6 +15,8 @@ class Sembench:
         sembench_data_location=None,
         sembench_config_path=None,
         sembench_config_file_name=None,
+        force=False,
+        scheduler_interval_seconds=None,
     ):
         """Create a Sembench object.
 
@@ -39,6 +43,8 @@ class Sembench:
         )
         self.sembench_config_path = sembench_config_path
         self.sembench_config_file_name = sembench_config_file_name
+        self.force = force
+        self.scheduler_interval_seconds = scheduler_interval_seconds
 
         assert not (self.sembench_config_path and sembench_config_file_name), (
             "sembench_config_file_name can't be specified when "
@@ -70,16 +76,27 @@ class Sembench:
     def dispatch_task(task):
         TaskDispatcher().dispatch(task)
 
-    def process(self, force=False):
+    def _process(self):
         tasks = [
             Task(
                 input_data_location=self.input_data_location,
                 output_data_location=self.output_data_location,
                 sembench_data_location=self.sembench_data_location,
                 config=config,
-                force=force,
+                force=self.force,
             )
             for config in self.configs
         ]
         for task in tasks:
             self.dispatch_task(task)
+
+    def process(self):
+        self._process()
+        if self.scheduler_interval_seconds:
+            scheduler = BlockingScheduler()
+            scheduler.add_job(
+                self._process,
+                "interval",
+                seconds=self.scheduler_interval_seconds,
+            )
+            scheduler.start()

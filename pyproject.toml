@@ -30,6 +30,7 @@ sphinx = {version = "^7.0.1", optional = true}
 
 # Poetry has the dependecies groups, but those are not 
 #   compatible with extras, widely used in the python-verse.
+apscheduler = "^3.10.4"
 [tool.poetry.extras]
 dev = ["pre-commit", "isort", "black", "flake8"]
 tests = ["pyyaml","pytest", "coverage", "python-dotenv", "pytest-cov"]
