@@ -1,7 +1,7 @@
 """
 This script runs pysembench with scheduling at a 10 second interval.
 """
-from pysembench.core import Sembench
+from pysembench import Sembench
 
 sb = Sembench(
     input_data_location="./examples/resources/input_data",

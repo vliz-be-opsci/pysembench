@@ -5,7 +5,7 @@ Modify examples/resources/sembench_data/sembench.json to run pyshacl on
 examples/resources/input_data/example_data_nonconform.ttl and see how the
 process fails.
 """
-from pysembench.core import Sembench
+from pysembench import Sembench
 
 sb = Sembench(
     input_data_location="./examples/resources/input_data",

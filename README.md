@@ -23,7 +23,7 @@ The following `sembench.json` config file defines a single task to be run with p
 All tasks in the `sembench.json` config file can be processed as follows.
 
 ```python
-from pysembench.core import Sembench
+from pysembench import Sembench
 
 sb = Sembench(
     input_data_location="./examples/resources/input_data",
