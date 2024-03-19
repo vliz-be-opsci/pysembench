@@ -86,7 +86,7 @@ class PysubytHandler(TaskHandler):
 
         mode = task.config.get("mode") or "iteration"
 
-        force = "--force" if task.force else ""
+        force = "--force" if (task.config.get("force") is True) else ""
 
         cmd = (
             f"pysubyt {force} "

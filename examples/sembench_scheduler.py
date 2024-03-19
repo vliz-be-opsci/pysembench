@@ -6,7 +6,6 @@ from pysembench import Sembench
 sb = Sembench(
     input_data_location="./examples/resources/input_data",
     sembench_data_location="./examples/resources/sembench_data",
-    force=True,
     scheduler_interval_seconds=10,
 )
 
