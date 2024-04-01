@@ -3,6 +3,8 @@ import os
 import subprocess
 
 from pyshacl import validate
+from pytravharv import TravHarv
+from syncfstriples import SyncFsTriples
 
 logger = logging.getLogger(__name__)
 
@@ -28,10 +30,10 @@ class PyshaclHandler(TaskHandler):
     def handle(self, task):
         conforms, _, _ = validate(
             data_graph=os.path.join(
-                task.input_data_location, task.config["data_graph"]
+                task.input_data_location, task.args["data_graph"]
             ),
             shacl_graph=os.path.join(
-                task.sembench_data_location, task.config["shacl_graph"]
+                task.sembench_data_location, task.args["shacl_graph"]
             ),
             data_graph_format="ttl",
             shacl_graph_format="ttl",
@@ -40,9 +42,9 @@ class PyshaclHandler(TaskHandler):
         )
         assert conforms, (
             "pyshacl validation failed for "
-            f"data graph \"{task.config['data_graph']}\" "
+            f"data graph \"{task.args['data_graph']}\" "
             "with "
-            f"shape graph \"{task.config['shacl_graph']}\""
+            f"shape graph \"{task.args['shacl_graph']}\""
         )
         return conforms
 
@@ -52,21 +54,21 @@ class PysubytHandler(TaskHandler):
         """Construct a shell command based on the Task attributes and run it
         via a subprocess call.
         """
-        input = task.config.get("input") or ""
+        input = task.args.get("input") or ""
         if input:
             input = (
                 f'--input "{os.path.join(task.input_data_location, input)}"'
             )
 
-        output = os.path.join(task.output_data_location, task.config["output"])
+        output = os.path.join(task.output_data_location, task.args["output"])
 
         templates = os.path.join(
-            task.sembench_data_location, task.config["template"]["jinja_root"]
+            task.sembench_data_location, task.args["template"]["jinja_root"]
         )
 
-        name = task.config["template"]["file_name"]
+        name = task.args["template"]["file_name"]
 
-        sets = task.config.get("sets") or ""
+        sets = task.args.get("sets") or ""
         if sets:
             sets_buffer = ""
             for set_key, set_value in sets.items():
@@ -75,7 +77,7 @@ class PysubytHandler(TaskHandler):
                 sets_buffer += f'--set "{set_name}" "{file_name}" '
             sets = sets_buffer
 
-        variables = task.config.get("variables") or ""
+        variables = task.args.get("variables") or ""
         if variables:
             variables_buffer = ""
             for variable_key, variable_value in variables.items():
@@ -84,9 +86,9 @@ class PysubytHandler(TaskHandler):
                 )
             variables = variables_buffer
 
-        mode = task.config.get("mode") or "iteration"
+        mode = task.args.get("mode") or "iteration"
 
-        force = "--force" if (task.config.get("force") is True) else ""
+        force = "--force" if (task.args.get("force") is True) else ""
 
         cmd = (
             f"pysubyt {force} "
@@ -96,9 +98,19 @@ class PysubytHandler(TaskHandler):
             f"{variables}"
             f'--mode "{mode}"'
         )
-        logger.info(f"subprocess call; {cmd}")
+        logger.info(f"subprocess call; {cmd}")  # noqa E702
         subprocess.check_call(cmd, shell=True)
         return cmd
+
+
+class PySyncFsTriplesHandler(TaskHandler):
+    def handle(self, task):
+        SyncFsTriples(**task.args).process()
+
+
+class PyTravHarvHandler(TaskHandler):
+    def handle(self, task):
+        TravHarv(**task.args).process()
 
 
 class RMLHandler(TaskHandler):

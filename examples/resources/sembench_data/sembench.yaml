@@ -1,16 +1,18 @@
 rdf_production_task:
-  type: pysubyt
-  input: data.csv
-  output: data.ttl
-  template:
-    jinja_root: templates
-    file_name: data.ttl.j2
-  sets:
-    countries: country_codes.csv
-  mode: no-iteration
-  force: true
+  func: pysubyt
+  args:
+    input: data.csv
+    output: data.ttl
+    template:
+      jinja_root: templates
+      file_name: data.ttl.j2
+    sets:
+      countries: country_codes.csv
+    mode: no-iteration
+    force: true
 
 rdf_validation_task:
-  type: pyshacl
-  data_graph: example_data_conform.ttl
-  shacl_graph: example_shape.ttl
+  func: pyshacl
+  args:
+    data_graph: example_data_conform.ttl
+    shacl_graph: example_shape.ttl

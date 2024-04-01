@@ -68,9 +68,8 @@ class Sembench:
                 self.sembench_config_path, self.sembench_config_file_name
             )
 
-        self.configs = []
-        self.configs = yaml.safe_load(open(self.sembench_config_path))
-        assert type(self.configs) == dict
+        self.task_configs = yaml.safe_load(open(self.sembench_config_path))
+        assert isinstance(self.task_configs, dict)
 
     @staticmethod
     def dispatch_task(task):
@@ -83,9 +82,10 @@ class Sembench:
                 output_data_location=self.output_data_location,
                 sembench_data_location=self.sembench_data_location,
                 task_id=task_id,
-                config=config,
+                func=task_config["func"],
+                args=task_config["args"],
             )
-            for task_id, config in self.configs.items()
+            for task_id, task_config in self.task_configs.items()
         ]
         for task in tasks:
             try:

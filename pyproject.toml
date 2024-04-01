@@ -6,11 +6,13 @@ authors = ["bulricht <108867473+bulricht@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-pysubyt = {git = "https://github.com/vliz-be-opsci/pysubyt.git", rev = "main"}
+python = "^3.10"
+pysubyt = {git = "https://github.com/vliz-be-opsci/pysubyt.git", rev = "4e2b92f2d9937724bc6827e03604e900f5fad7c2"}
 pyshacl = "^0.22.0"
-poetry = {version = "^1.4.2", extras = ["dev"]}
-
+apscheduler = "^3.10.4"
+pysyncfstriples = {git = "https://github.com/vliz-be-opsci/py-sync-fs-triples.git", rev = "chore/unit_testing_services"}
+pytravharv = {git = "https://github.com/vliz-be-opsci/py-trav-harv.git", rev = "test/dependencies"}
+pyyaml = "^6.0.1"
 
 # Development tools
 pre-commit = {version = "^3.3.1", optional = true}
@@ -19,7 +21,6 @@ black = {version = "^23.3.0", optional = true}
 flake8 = {version = "^6.0.0", optional = true}
 
 # Testing tools
-pyyaml = {version = "^6.0", optional = true}
 pytest = {version = "^7.3.1", optional = true}
 coverage = {version = "^7.2.5", optional = true}
 python-dotenv = {version = "^1.0.0", optional = true}
@@ -30,10 +31,9 @@ sphinx = {version = "^7.0.1", optional = true}
 
 # Poetry has the dependecies groups, but those are not 
 #   compatible with extras, widely used in the python-verse.
-apscheduler = "^3.10.4"
 [tool.poetry.extras]
 dev = ["pre-commit", "isort", "black", "flake8"]
-tests = ["pyyaml","pytest", "coverage", "python-dotenv", "pytest-cov"]
+tests = ["pytest", "coverage", "python-dotenv", "pytest-cov"]
 docs = ["sphinx"]
 
 [build-system]
