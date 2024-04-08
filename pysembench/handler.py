@@ -3,7 +3,7 @@ import os
 import subprocess
 
 from pyshacl import validate
-from pytravharv import TravHarv
+from travharv import TravHarv
 from syncfstriples import SyncFsTriples
 
 logger = logging.getLogger(__name__)
@@ -14,16 +14,13 @@ class TaskHandler:
         raise NotImplementedError
 
 
-class CSVWHandler(TaskHandler):
-    ...
+class CSVWHandler(TaskHandler): ...
 
 
-class EyereasonerHandler(TaskHandler):
-    ...
+class EyereasonerHandler(TaskHandler): ...
 
 
-class Pykg2tblHandler(TaskHandler):
-    ...
+class Pykg2tblHandler(TaskHandler): ...
 
 
 class PyshaclHandler(TaskHandler):
@@ -113,5 +110,4 @@ class PyTravHarvHandler(TaskHandler):
         TravHarv(**task.args).process()
 
 
-class RMLHandler(TaskHandler):
-    ...
+class RMLHandler(TaskHandler): ...
