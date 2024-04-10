@@ -49,6 +49,14 @@ class Sembench:
         self.scheduler_interval_seconds = scheduler_interval_seconds
         self.fail_fast = fail_fast
 
+        if (
+            self.scheduler_interval_seconds is not None
+            and self.scheduler_interval_seconds is not ""
+        ):
+            self.scheduler_interval_seconds = int(
+                self.scheduler_interval_seconds
+            )
+
         assert not (self.sembench_config_path and sembench_config_file_name), (
             "sembench_config_file_name can't be specified when "
             "sembench_config_path is specified"
@@ -102,6 +110,6 @@ class Sembench:
             scheduler.add_job(
                 self._process,
                 "interval",
-                seconds=self.scheduler_interval_seconds,
+                seconds=self.scheduler_interval_seconds,  # This fails with type error unsupported type:str (expected int) (perhaps put int here tbs)
             )
             scheduler.start()
