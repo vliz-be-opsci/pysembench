@@ -51,7 +51,7 @@ class Sembench:
 
         if (
             self.scheduler_interval_seconds is not None
-            and self.scheduler_interval_seconds is not ""
+            and self.scheduler_interval_seconds != ""
         ):
             self.scheduler_interval_seconds = int(
                 self.scheduler_interval_seconds
@@ -110,6 +110,6 @@ class Sembench:
             scheduler.add_job(
                 self._process,
                 "interval",
-                seconds=self.scheduler_interval_seconds,  # This fails with type error unsupported type:str (expected int) (perhaps put int here tbs)
+                seconds=self.scheduler_interval_seconds,
             )
             scheduler.start()
