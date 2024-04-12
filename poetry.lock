@@ -2151,7 +2151,7 @@ validators = "^0.22.0"
 type = "git"
 url = "https://github.com/vliz-be-opsci/py-trav-harv.git"
 reference = "main"
-resolved_reference = "85faca30321cd1b865b63a90f5d18321799916f7"
+resolved_reference = "b2aa00f92c8dd72f46b754781b798d56261a9e33"
 
 [[package]]
 name = "trove-classifiers"
