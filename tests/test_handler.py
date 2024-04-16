@@ -48,8 +48,10 @@ class TestPysubytHandler(TestCase):
                 ".",
                 ".",
                 ".",
+                "my_pysubyt_task",
+                "pysubyt",
                 {
-                    "type": "pysubyt",
+                    "force": g[0],
                     "input": g[1],
                     "output": g[2],
                     "template": {"jinja_root": g[3], "file_name": g[4]},
@@ -57,7 +59,6 @@ class TestPysubytHandler(TestCase):
                     "variables": g[6],
                     "mode": g[7],
                 },
-                g[0],
             )
             for g in grid
         ]
@@ -108,12 +109,12 @@ class TestPyshaclHandler(TestCase):
             Path("./tests/resources/input_data"),
             Path("."),
             Path("./tests/resources/sembench_data"),
+            "my_pyshacl_task1",
+            "pyshacl",
             {
-                "type": "pyshacl",
                 "data_graph": "example_data_conform.ttl",
                 "shacl_graph": "example_shape.ttl",
             },
-            True,
         )
         self.assertTrue(PyshaclHandler().handle(task))
 
@@ -121,12 +122,12 @@ class TestPyshaclHandler(TestCase):
             Path("./tests/resources/input_data"),
             Path("."),
             Path("./tests/resources/sembench_data"),
+            "my_pyshacl_task2",
+            "pyshacl",
             {
-                "type": "pyshacl",
                 "data_graph": "example_data_nonconform.ttl",
                 "shacl_graph": "example_shape.ttl",
             },
-            True,
         )
         with self.assertRaises(AssertionError):
             PyshaclHandler().handle(task)

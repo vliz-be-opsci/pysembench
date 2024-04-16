@@ -22,8 +22,8 @@ class TestSembench(TestCase):
                 sb.sembench_data_location, sb.sembench_config_file_name
             ),
         )
-        self.assertEqual(sb.sembench_config_file_name, "sembench.json")
-        self.assertEqual(sb.configs[0]["type"], "A")
+        self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
+        self.assertEqual(sb.task_configs["my_only_task"]["func"], "A")
 
     def test_init_input_data_output_data(self):
         kwargs = {
@@ -41,8 +41,8 @@ class TestSembench(TestCase):
                 sb.sembench_data_location, sb.sembench_config_file_name
             ),
         )
-        self.assertEqual(sb.sembench_config_file_name, "sembench.json")
-        self.assertEqual(sb.configs[0]["type"], "A")
+        self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
+        self.assertEqual(sb.task_configs["my_only_task"]["func"], "A")
 
     def test_init_input_data_sembench_data(self):
         kwargs = {
@@ -60,28 +60,28 @@ class TestSembench(TestCase):
                 sb.sembench_data_location, sb.sembench_config_file_name
             ),
         )
-        self.assertEqual(sb.sembench_config_file_name, "sembench.json")
-        self.assertEqual(sb.configs[0]["type"], "B")
+        self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
+        self.assertEqual(sb.task_configs["my_only_task"]["func"], "B")
 
     def test_init_input_data_sembench_config_path(self):
         kwargs = {
             "input_data_location": "./tests/resources/input_data",
-            "sembench_config_path": "./tests/resources/weirdly_named_sembench.json",  # noqa
+            "sembench_config_path": "./tests/resources/weirdly_named_sembench.yaml",  # noqa
         }
         sb = Sembench(**kwargs)
         self.assertEqual(sb.output_data_location, sb.input_data_location)
         self.assertEqual(sb.sembench_data_location, sb.input_data_location)
         self.assertEqual(
             sb.sembench_config_path,
-            "./tests/resources/weirdly_named_sembench.json",
+            "./tests/resources/weirdly_named_sembench.yaml",
         )
-        self.assertEqual(sb.sembench_config_file_name, "sembench.json")
-        self.assertEqual(sb.configs[0]["type"], "C")
+        self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
+        self.assertEqual(sb.task_configs["my_only_task"]["func"], "C")
 
     def test_init_input_data_sembench_config_file_name(self):
         kwargs = {
             "input_data_location": "./tests/resources/input_data",
-            "sembench_config_file_name": "another_weirdly_named_sembench.json",
+            "sembench_config_file_name": "another_weirdly_named_sembench.yaml",
         }
         sb = Sembench(**kwargs)
         self.assertEqual(sb.output_data_location, sb.input_data_location)
@@ -93,14 +93,14 @@ class TestSembench(TestCase):
             ),
         )
         self.assertEqual(
-            sb.sembench_config_file_name, "another_weirdly_named_sembench.json"
+            sb.sembench_config_file_name, "another_weirdly_named_sembench.yaml"
         )
-        self.assertEqual(sb.configs[0]["type"], "D")
+        self.assertEqual(sb.task_configs["my_only_task"]["func"], "D")
 
     def test_init_sembench_config_path_sembench_config_file_name(self):
         kwargs = {
             "input_data_location": "./tests/resources/input_data",
-            "sembench_config_path": "./tests/resources/weirdly_named_sembench.json",  # noqa
-            "sembench_config_file_name": "another_weirdly_named_sembench.json",
+            "sembench_config_path": "./tests/resources/weirdly_named_sembench.yaml",  # noqa
+            "sembench_config_file_name": "another_weirdly_named_sembench.yaml",
         }
         self.assertRaises(AssertionError, lambda: Sembench(**kwargs))

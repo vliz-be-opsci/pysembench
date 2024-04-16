@@ -1,13 +1,20 @@
-from pysembench.handler import PyshaclHandler, PysubytHandler
+from pysembench.handler import (
+    PyshaclHandler,
+    PysubytHandler,
+    PySyncFsTriplesHandler,
+    PyTravHarvHandler,
+)
 
 
 class TaskDispatcher:
-    type_to_handler = {
+    func_to_handler = {
         "pysubyt": PysubytHandler,
         "pyshacl": PyshaclHandler,
+        "py-sync-fs-triples": PySyncFsTriplesHandler,
+        "py-trav-harv": PyTravHarvHandler,
     }
 
     def dispatch(self, task):
-        handler = self.type_to_handler[task.config["type"].lower()]
+        handler = self.func_to_handler[task.func]
         handler().handle(task)
         return handler

@@ -4,11 +4,13 @@ class Task:
         input_data_location,
         output_data_location,
         sembench_data_location,
-        config,
-        force,
+        task_id,
+        func,
+        args,
     ):
         self.input_data_location = input_data_location
         self.output_data_location = output_data_location
         self.sembench_data_location = sembench_data_location
-        self.config = config
-        self.force = force
+        self.task_id = task_id
+        self.func = func.lower()
+        self.args = args

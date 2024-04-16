@@ -12,7 +12,7 @@ class TestTaskDispatcher(TestCase):
     def test_dispatch(self, patch1, patch2):
         patch1 = Mock()  # noqa F841
         patch2 = Mock()  # noqa F841
-        task1 = Task(".", ".", ".", {"type": "pysubyt"}, True)
-        task2 = Task(".", ".", ".", {"type": "pyshacl"}, True)
+        task1 = Task(".", ".", ".", "my_pysubyt_task", "pysubyt", {})
+        task2 = Task(".", ".", ".", "my_pyshacl_task", "pyshacl", {})
         self.assertEqual(TaskDispatcher().dispatch(task1), PysubytHandler)
         self.assertEqual(TaskDispatcher().dispatch(task2), PyshaclHandler)
