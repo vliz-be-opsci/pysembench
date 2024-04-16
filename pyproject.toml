@@ -31,6 +31,7 @@ sphinx = {version = "^7.0.1", optional = true}
 
 # Poetry has the dependecies groups, but those are not 
 #   compatible with extras, widely used in the python-verse.
+watchdog = "^4.0.0"
 [tool.poetry.extras]
 dev = ["pre-commit", "isort", "black", "flake8"]
 tests = ["pytest", "coverage", "python-dotenv", "pytest-cov"]
