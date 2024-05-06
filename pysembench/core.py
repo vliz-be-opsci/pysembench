@@ -6,11 +6,13 @@ import yaml
 from apscheduler.schedulers.blocking import BlockingScheduler
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
+from typing import Dict
+from pathlib import Path
 
 from pysembench.dispatcher import TaskDispatcher
 from pysembench.task import Task
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class ConfigFileEventHandler(FileSystemEventHandler):
@@ -39,9 +41,7 @@ class ConfigFileEventHandler(FileSystemEventHandler):
 class Sembench:
     def __init__(
         self,
-        input_data_location,
-        output_data_location=None,
-        sembench_data_location=None,
+        locations: Dict[str, str] = None,
         sembench_config_path=None,
         sembench_config_file_name=None,
         scheduler_interval_seconds=None,
@@ -50,55 +50,93 @@ class Sembench:
     ):
         """Create a Sembench object.
 
-        :param input_data_location: Path to the input data folder.
-
-        :param output_data_location: Path to the output data folder. Optional;
-        defaults to the input_data_location.
-
-        :param sembench_data_location: Path to the sembench data folder.
-        Optional; defaults to the input_data_location.
+        :param locations: dict of keyed paths to various filesystem locations
+        with specific roles, such as "home", "input", "output", ...
+        Optional; defaults to dict with key "home" derived from the
+        sembench_config_path and key "input" same as "home"
 
         :param sembench_config_path: Path to the sembench config file.
-        Optional; defaults to sembench_data_location/sembench.json.
+        Optional; defaults to {home}/sembench.yaml.
 
         :param sembench_config_file_name: Name of the sembench config file.
-        Optional; defaults to sembench.json.
-
-        :returns: None
+        Optional; defaults to sembench.yaml.
         """
-        assert input_data_location, "input_data_location must be specified"
-        self.input_data_location = input_data_location
-        self.output_data_location = output_data_location or input_data_location
-        self.sembench_data_location = (
-            sembench_data_location or input_data_location
-        )
-        self.sembench_config_path = sembench_config_path
-        self.sembench_config_file_name = sembench_config_file_name
+        locations = locations or dict()
+        self.locations = {
+            key.lower(): Path(loc)
+            for key, loc in locations.items()
+        }
+
+        if sembench_config_path is not None:  # explicit config path
+            sembench_config_path = Path(sembench_config_path)
+            assert sembench_config_path.exists(), "not found config_path"
+            self.sembench_config_path = str(sembench_config_path)
+            config_file_name = sembench_config_path.name
+            if sembench_config_file_name is not None:
+                assert sembench_config_file_name == config_file_name
+            self.sembench_config_file_name = config_file_name
+            if "home" not in self.locations:
+                # get home location from the config_path
+                self.locations['home'] = sembench_config_path.parent
+        else:
+            # reverse logic -- use home to find config_path
+            assert "home" in self.locations, "home path required"
+            home = self.locations["home"]
+            if not sembench_config_file_name:
+                sembench_config_file_name = "sembench.yaml"
+            sembench_config_path = home / sembench_config_file_name
+            assert sembench_config_path.exists(), "not found config_path"
+            self.sembench_config_path = str(sembench_config_path)
+            self.sembench_config_file_name = sembench_config_path.name
+
+        if "input" not in self.locations:  # take same as home
+            self.locations['input'] = self.locations['home']
+        if "output" not in self.locations:  # take same as input
+            self.locations['output'] = self.locations['input']
+
         self.scheduler_interval_seconds = scheduler_interval_seconds
         self.watch_config_file = watch_config_file
         self.fail_fast = fail_fast
 
-        assert not (self.sembench_config_path and sembench_config_file_name), (
-            "sembench_config_file_name can't be specified when "
-            "sembench_config_path is specified"
-        )
-
-        self.sembench_config_path = (
-            self.sembench_config_path or self.sembench_data_location
-        )
-        self.sembench_config_file_name = (
-            self.sembench_config_file_name or "sembench.yaml"
-        )
-
-        if not self.sembench_config_path.endswith(
-            self.sembench_config_file_name
-        ):
-            self.sembench_config_path = os.path.join(
-                self.sembench_config_path, self.sembench_config_file_name
-            )
-
-        self.task_configs = yaml.safe_load(open(self.sembench_config_path))
+        self.task_configs = None
+        self._init_task_configs()
         assert isinstance(self.task_configs, dict)
+
+    def _init_task_configs(self):
+        conf_yml = str(self.sembench_config_path)
+        context = {k: str(p) for k, p in self.locations.items()}
+
+        def resolver(loader: yaml.SafeLoader, node: yaml.nodes.ScalarNode) -> str:
+            txt = loader.construct_scalar(node)
+            try:
+                txt = txt.format(**context)
+            except KeyError as ke:
+                log.error(
+                    f"config at {conf_yml} contains '{txt}' with unknown key --> {ke}"
+                )
+            return txt
+
+        loader = yaml.SafeLoader
+        loader.add_constructor("!resolve", resolver)
+
+        with open(conf_yml, 'r') as yml:
+            self.task_configs = yaml.load(yml, Loader=loader)
+
+    def _data_location(self, key):
+        input_location = self.locations.get(key)
+        return str(input_location) if input_location else None
+
+    @property
+    def input_data_location(self):
+        return self._data_location("input")
+
+    @property
+    def output_data_location(self):
+        return self._data_location("output")
+
+    @property
+    def sembench_data_location(self):
+        return self._data_location("home")
 
     @staticmethod
     def dispatch_task(task):
@@ -120,7 +158,7 @@ class Sembench:
             try:
                 self.dispatch_task(task)
             except Exception as e:
-                logger.error(f"{task.task_id} failed with exception: {e}")
+                log.error(f"{task.task_id} failed with exception: {e}")
                 if self.fail_fast:
                     raise e
 
