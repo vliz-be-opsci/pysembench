@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import os
 import subprocess
 from itertools import product
@@ -131,3 +132,9 @@ class TestPyshaclHandler(TestCase):
         )
         with self.assertRaises(AssertionError):
             PyshaclHandler().handle(task)
+
+
+if __name__ == "__main__":
+    from util4tests import run_single_test
+
+    run_single_test(__file__)

@@ -1,7 +1,8 @@
-import os
+#! /usr/bin/env python
+from pathlib import Path
 from unittest import TestCase
 
-from pysembench.core import Sembench
+from pysembench.core import Sembench, locations_from_environ
 
 
 class TestSembench(TestCase):
@@ -10,87 +11,93 @@ class TestSembench(TestCase):
     """
 
     def test_init_input_data(self):
-        kwargs = {
-            "input_data_location": "./tests/resources/input_data",
-        }
+        kwargs = dict(
+            locations=dict(
+                home="./tests/resources/input_data",
+            ),
+        )
         sb = Sembench(**kwargs)
         self.assertEqual(sb.output_data_location, sb.input_data_location)
         self.assertEqual(sb.sembench_data_location, sb.input_data_location)
         self.assertEqual(
-            sb.sembench_config_path,
-            os.path.join(
-                sb.sembench_data_location, sb.sembench_config_file_name
-            ),
+            Path(sb.sembench_config_path),
+            Path(sb.sembench_data_location) / sb.sembench_config_file_name,
         )
         self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
         self.assertEqual(sb.task_configs["my_only_task"]["func"], "A")
 
     def test_init_input_data_output_data(self):
-        kwargs = {
-            "input_data_location": "./tests/resources/input_data",
-            "output_data_location": "./tests/resources/output_data",
-        }
+        kwargs = dict(
+            locations=dict(
+                home="./tests/resources/input_data",
+                output="./tests/resources/output_data",
+            )
+        )
         sb = Sembench(**kwargs)
         self.assertEqual(
-            sb.output_data_location, "./tests/resources/output_data"
+            Path(sb.output_data_location),
+            Path("./tests/resources/output_data"),
         )
         self.assertEqual(sb.sembench_data_location, sb.input_data_location)
         self.assertEqual(
-            sb.sembench_config_path,
-            os.path.join(
-                sb.sembench_data_location, sb.sembench_config_file_name
-            ),
+            Path(sb.sembench_config_path),
+            Path(sb.sembench_data_location) / sb.sembench_config_file_name,
         )
         self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
         self.assertEqual(sb.task_configs["my_only_task"]["func"], "A")
 
     def test_init_input_data_sembench_data(self):
-        kwargs = {
-            "input_data_location": "./tests/resources/input_data",
-            "sembench_data_location": "./tests/resources/sembench_data",
-        }
+        kwargs = dict(
+            locations=dict(
+                home="./tests/resources/sembench_data",
+                input="./tests/resources/input_data",
+            ),
+        )
         sb = Sembench(**kwargs)
         self.assertEqual(sb.output_data_location, sb.input_data_location)
         self.assertEqual(
-            sb.sembench_data_location, "./tests/resources/sembench_data"
+            Path(sb.sembench_data_location),
+            Path("./tests/resources/sembench_data"),
         )
         self.assertEqual(
-            sb.sembench_config_path,
-            os.path.join(
-                sb.sembench_data_location, sb.sembench_config_file_name
-            ),
+            Path(sb.sembench_config_path),
+            Path(sb.sembench_data_location) / sb.sembench_config_file_name,
         )
         self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
         self.assertEqual(sb.task_configs["my_only_task"]["func"], "B")
 
     def test_init_input_data_sembench_config_path(self):
-        kwargs = {
-            "input_data_location": "./tests/resources/input_data",
-            "sembench_config_path": "./tests/resources/weirdly_named_sembench.yaml",  # noqa
-        }
+        kwargs = dict(
+            locations=dict(
+                home="./tests/resources/input_data",
+            ),
+            sembench_config_path="./tests/resources/weirdly_named_sembench.yaml",  # noqa
+        )
         sb = Sembench(**kwargs)
         self.assertEqual(sb.output_data_location, sb.input_data_location)
         self.assertEqual(sb.sembench_data_location, sb.input_data_location)
         self.assertEqual(
-            sb.sembench_config_path,
-            "./tests/resources/weirdly_named_sembench.yaml",
+            Path(sb.sembench_config_path),
+            Path("./tests/resources/weirdly_named_sembench.yaml"),
         )
-        self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
+        self.assertEqual(
+            sb.sembench_config_file_name, "weirdly_named_sembench.yaml"
+        )
         self.assertEqual(sb.task_configs["my_only_task"]["func"], "C")
 
     def test_init_input_data_sembench_config_file_name(self):
-        kwargs = {
-            "input_data_location": "./tests/resources/input_data",
-            "sembench_config_file_name": "another_weirdly_named_sembench.yaml",
-        }
+        kwargs = dict(
+            locations=dict(
+                home="./tests/resources/input_data",
+            ),
+            sembench_config_file_name="another_weirdly_named_sembench.yaml",
+        )
         sb = Sembench(**kwargs)
         self.assertEqual(sb.output_data_location, sb.input_data_location)
         self.assertEqual(sb.sembench_data_location, sb.input_data_location)
         self.assertEqual(
-            sb.sembench_config_path,
-            os.path.join(
-                sb.sembench_data_location, sb.sembench_config_file_name
-            ),
+            Path(sb.sembench_config_path),
+            Path(sb.sembench_data_location) / sb.sembench_config_file_name,
         )
         self.assertEqual(
             sb.sembench_config_file_name, "another_weirdly_named_sembench.yaml"
@@ -98,9 +105,57 @@ class TestSembench(TestCase):
         self.assertEqual(sb.task_configs["my_only_task"]["func"], "D")
 
     def test_init_sembench_config_path_sembench_config_file_name(self):
-        kwargs = {
-            "input_data_location": "./tests/resources/input_data",
-            "sembench_config_path": "./tests/resources/weirdly_named_sembench.yaml",  # noqa
-            "sembench_config_file_name": "another_weirdly_named_sembench.yaml",
-        }
+        kwargs = dict(
+            locations=dict(
+                home="./tests/resources/input_data",
+            ),
+            sembench_config_path="./tests/resources/weirdly_named_sembench.yaml",  # noqa
+            sembench_config_file_name="another_weirdly_named_sembench.yaml",
+        )
         self.assertRaises(AssertionError, lambda: Sembench(**kwargs))
+
+    def test_init_resolve_config_path(self):
+        kwargs = dict(
+            locations=dict(
+                one="1",
+                two="2",
+            ),
+            sembench_config_path="./tests/resources/resolving-sembench.yml",
+        )
+        sb = Sembench(**kwargs)
+        self.assertEqual(
+            sb.sembench_config_file_name, "resolving-sembench.yml"
+        )
+        self.assertEqual(
+            Path(sb.sembench_config_path),
+            Path("./tests/resources/resolving-sembench.yml"),
+        )
+        self.assertEqual(
+            Path(sb.sembench_data_location), Path("./tests/resources")
+        )
+        self.assertTrue("my_resolved_task" in sb.task_configs)
+        rt = sb.task_configs["my_resolved_task"]
+        self.assertEqual(rt["func"], "R")
+        expected_args = dict(
+            plain="no resolve going on",
+            skip="keep {one} unresolved",
+            noop="nothing to resolve",
+            one="unquoted 1/1",
+            two="quoted 2/2",
+            twelve="12/12",
+        )
+        self.assertDictEqual(rt["args"], expected_args)
+
+    def test_locations_environ(self):
+        # note : the relevant environment variables are set in the pytest.ini
+        # and are loaded into the env through plugin pytest-env
+        locations = locations_from_environ()
+        self.assertTrue({"one", "two"} == locations.keys())
+        self.assertTrue(locations["one"] == "1")
+        self.assertTrue(locations["two"] == "2")
+
+
+if __name__ == "__main__":
+    from util4tests import run_single_test
+
+    run_single_test(__file__)
