@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
@@ -16,3 +17,8 @@ class TestTaskDispatcher(TestCase):
         task2 = Task(".", ".", ".", "my_pyshacl_task", "pyshacl", {})
         self.assertEqual(TaskDispatcher().dispatch(task1), PysubytHandler)
         self.assertEqual(TaskDispatcher().dispatch(task2), PyshaclHandler)
+
+
+if __name__ == "__main__":
+    from util4tests import run_single_test
+    run_single_test(__file__)

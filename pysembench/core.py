@@ -1,13 +1,14 @@
 import logging
 import os
+import re
 import time
+from pathlib import Path
+from typing import Dict
 
 import yaml
 from apscheduler.schedulers.blocking import BlockingScheduler
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
-from typing import Dict
-from pathlib import Path
 
 from pysembench.dispatcher import TaskDispatcher
 from pysembench.task import Task
@@ -38,6 +39,18 @@ class ConfigFileEventHandler(FileSystemEventHandler):
                     os.environ["PYSEMBENCH_WATCHDOG_TIME"] = str(time.time())
 
 
+LOCATION_KEY_PATTERN = r"PYSEMBENCH_(\w+)_PATH"
+
+
+def locations_from_environ() -> Dict[str, str]:
+    locations = dict()
+    for k, v in os.environ.items():
+        m = re.match(LOCATION_KEY_PATTERN, k)
+        if m:
+            locations[m.group(1).lower()] = v
+    return locations
+
+
 class Sembench:
     def __init__(
         self,
@@ -63,8 +76,7 @@ class Sembench:
         """
         locations = locations or dict()
         self.locations = {
-            key.lower(): Path(loc)
-            for key, loc in locations.items()
+            key.lower(): Path(loc) for key, loc in locations.items()
         }
 
         if sembench_config_path is not None:  # explicit config path
@@ -77,7 +89,7 @@ class Sembench:
             self.sembench_config_file_name = config_file_name
             if "home" not in self.locations:
                 # get home location from the config_path
-                self.locations['home'] = sembench_config_path.parent
+                self.locations["home"] = sembench_config_path.parent
         else:
             # reverse logic -- use home to find config_path
             assert "home" in self.locations, "home path required"
@@ -90,9 +102,9 @@ class Sembench:
             self.sembench_config_file_name = sembench_config_path.name
 
         if "input" not in self.locations:  # take same as home
-            self.locations['input'] = self.locations['home']
+            self.locations["input"] = self.locations["home"]
         if "output" not in self.locations:  # take same as input
-            self.locations['output'] = self.locations['input']
+            self.locations["output"] = self.locations["input"]
 
         self.scheduler_interval_seconds = scheduler_interval_seconds
         self.watch_config_file = watch_config_file
@@ -106,20 +118,23 @@ class Sembench:
         conf_yml = str(self.sembench_config_path)
         context = {k: str(p) for k, p in self.locations.items()}
 
-        def resolver(loader: yaml.SafeLoader, node: yaml.nodes.ScalarNode) -> str:
+        def resolver(
+            loader: yaml.SafeLoader, node: yaml.nodes.ScalarNode
+        ) -> str:
             txt = loader.construct_scalar(node)
             try:
                 txt = txt.format(**context)
             except KeyError as ke:
                 log.error(
-                    f"config at {conf_yml} contains '{txt}' with unknown key --> {ke}"
+                    f"config at {conf_yml} contains '{txt}' "
+                    f"with unknown key --> {ke}"
                 )
             return txt
 
         loader = yaml.SafeLoader
         loader.add_constructor("!resolve", resolver)
 
-        with open(conf_yml, 'r') as yml:
+        with open(conf_yml, "r") as yml:
             self.task_configs = yaml.load(yml, Loader=loader)
 
     def _data_location(self, key):

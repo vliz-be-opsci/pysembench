@@ -1,10 +1,8 @@
-from unittest import TestCase
+#! /usr/bin/env python
 from pathlib import Path
+from unittest import TestCase
 
-from pysembench.core import Sembench
-from logging import getLogger
-
-log = getLogger("tests")
+from pysembench.core import Sembench, locations_from_environ
 
 
 class TestSembench(TestCase):
@@ -23,7 +21,7 @@ class TestSembench(TestCase):
         self.assertEqual(sb.sembench_data_location, sb.input_data_location)
         self.assertEqual(
             Path(sb.sembench_config_path),
-            Path(sb.sembench_data_location) / sb.sembench_config_file_name
+            Path(sb.sembench_data_location) / sb.sembench_config_file_name,
         )
         self.assertEqual(sb.sembench_config_file_name, "sembench.yaml")
         self.assertEqual(sb.task_configs["my_only_task"]["func"], "A")
@@ -31,13 +29,14 @@ class TestSembench(TestCase):
     def test_init_input_data_output_data(self):
         kwargs = dict(
             locations=dict(
-                home="./tests/resources/input_data", 
+                home="./tests/resources/input_data",
                 output="./tests/resources/output_data",
             )
         )
         sb = Sembench(**kwargs)
         self.assertEqual(
-            Path(sb.output_data_location), Path("./tests/resources/output_data")
+            Path(sb.output_data_location),
+            Path("./tests/resources/output_data"),
         )
         self.assertEqual(sb.sembench_data_location, sb.input_data_location)
         self.assertEqual(
@@ -57,7 +56,8 @@ class TestSembench(TestCase):
         sb = Sembench(**kwargs)
         self.assertEqual(sb.output_data_location, sb.input_data_location)
         self.assertEqual(
-            Path(sb.sembench_data_location), Path("./tests/resources/sembench_data")
+            Path(sb.sembench_data_location),
+            Path("./tests/resources/sembench_data"),
         )
         self.assertEqual(
             Path(sb.sembench_config_path),
@@ -80,7 +80,9 @@ class TestSembench(TestCase):
             Path(sb.sembench_config_path),
             Path("./tests/resources/weirdly_named_sembench.yaml"),
         )
-        self.assertEqual(sb.sembench_config_file_name, "weirdly_named_sembench.yaml")
+        self.assertEqual(
+            sb.sembench_config_file_name, "weirdly_named_sembench.yaml"
+        )
         self.assertEqual(sb.task_configs["my_only_task"]["func"], "C")
 
     def test_init_input_data_sembench_config_file_name(self):
@@ -121,9 +123,16 @@ class TestSembench(TestCase):
             sembench_config_path="./tests/resources/resolving-sembench.yml",
         )
         sb = Sembench(**kwargs)
-        self.assertEqual(sb.sembench_config_file_name, "resolving-sembench.yml")
-        self.assertEqual(Path(sb.sembench_config_path), Path("./tests/resources/resolving-sembench.yml"))
-        self.assertEqual(Path(sb.sembench_data_location), Path("./tests/resources"))
+        self.assertEqual(
+            sb.sembench_config_file_name, "resolving-sembench.yml"
+        )
+        self.assertEqual(
+            Path(sb.sembench_config_path),
+            Path("./tests/resources/resolving-sembench.yml"),
+        )
+        self.assertEqual(
+            Path(sb.sembench_data_location), Path("./tests/resources")
+        )
         self.assertTrue("my_resolved_task" in sb.task_configs)
         rt = sb.task_configs["my_resolved_task"]
         self.assertEqual(rt["func"], "R")
@@ -135,3 +144,16 @@ class TestSembench(TestCase):
             twelve="12/12",
         )
         self.assertDictEqual(rt["args"], expected_args)
+
+    def test_locations_environ(self):
+        # note : the relevant environment variables are set in the pytest.ini
+        # and are loaded into the env through plugin pytest-env
+        locations = locations_from_environ()
+        self.assertTrue({"one", "two"} == locations.keys())
+        self.assertTrue(locations["one"] == "1")
+        self.assertTrue(locations["two"] == "2")
+
+
+if __name__ == "__main__":
+    from util4tests import run_single_test
+    run_single_test(__file__)
