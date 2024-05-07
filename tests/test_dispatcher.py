@@ -21,4 +21,5 @@ class TestTaskDispatcher(TestCase):
 
 if __name__ == "__main__":
     from util4tests import run_single_test
+
     run_single_test(__file__)

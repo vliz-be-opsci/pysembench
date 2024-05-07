@@ -138,6 +138,7 @@ class TestSembench(TestCase):
         self.assertEqual(rt["func"], "R")
         expected_args = dict(
             plain="no resolve going on",
+            skip="keep {one} unresolved",
             noop="nothing to resolve",
             one="unquoted 1/1",
             two="quoted 2/2",
@@ -156,4 +157,5 @@ class TestSembench(TestCase):
 
 if __name__ == "__main__":
     from util4tests import run_single_test
+
     run_single_test(__file__)
