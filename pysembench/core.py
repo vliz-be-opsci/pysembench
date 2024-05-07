@@ -39,7 +39,7 @@ class ConfigFileEventHandler(FileSystemEventHandler):
                     os.environ["PYSEMBENCH_WATCHDOG_TIME"] = str(time.time())
 
 
-LOCATION_KEY_PATTERN = r"PYSEMBENCH_(\w+)_PATH"
+LOCATION_KEY_PATTERN = r"SEMBENCH_(\w+)_PATH"
 
 
 def locations_from_environ() -> Dict[str, str]:
