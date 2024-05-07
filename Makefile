@@ -52,7 +52,7 @@ check:   ## performs linting on the python code
 	poetry run isort --check --diff .
 	poetry run flake8 . --exclude ${FLAKE8_EXCLUDE}
 
-lint-fix:a   ## fixes code according to the lint suggestions
+lint-fix:   ## fixes code according to the lint suggestions
 	poetry run black .
 	poetry run isort .
 
