@@ -4,22 +4,21 @@ The following `sembench.yaml` config file defines two tasks: one to run with pys
 
 ```yaml
 rdf_production_task:
-  type: pysubyt
-  input: data.csv
-  output: data.ttl
-  template:
-    jinja_root: templates
-    file_name: data.ttl.j2
-  sets:
-    countries: country_codes.csv
-  mode: no-iteration
-  force: true
+  func: pysubyt
+  args:
+    template_folder: !resolve "{home}/templates"
+    template_name: data.ttl.j2
+    source: !resolve "{input}/data.csv"
+    extra_sources:
+      countries: !resolve "{input}/country_codes.csv"
+    sink: !resolve "{output}/data.ttl"
+    mode: no-iteration
 
 rdf_validation_task:
-  type: pyshacl
-  data_graph: example_data_conform.ttl
-  shacl_graph: example_shape.ttl
-
+  func: pyshacl
+  args:
+    data_graph: example_data_conform.ttl
+    shacl_graph: example_shape.ttl
 ```
 
 All tasks in the `sembench.yaml` config file can be processed as follows.
@@ -28,8 +27,10 @@ All tasks in the `sembench.yaml` config file can be processed as follows.
 from pysembench import Sembench
 
 sb = Sembench(
-    input_data_location="./examples/resources/input_data",
-    sembench_data_location="./examples/resources/sembench_data",
+    locations={
+        "home": "./examples/resources/sembench_data",
+        "input": "./examples/resources/input_data",
+    }
 )
 
 sb.process()

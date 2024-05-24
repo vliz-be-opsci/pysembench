@@ -8,8 +8,10 @@ process fails.
 from pysembench import Sembench
 
 sb = Sembench(
-    input_data_location="./examples/resources/input_data",
-    sembench_data_location="./examples/resources/sembench_data",
+    locations={
+        "home": "./examples/resources/sembench_data",
+        "input": "./examples/resources/input_data",
+    }
 )
 
 sb.process()

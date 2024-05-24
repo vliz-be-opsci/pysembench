@@ -1,15 +1,13 @@
 rdf_production_task:
   func: pysubyt
   args:
-    input: data.csv
-    output: data.ttl
-    template:
-      jinja_root: templates
-      file_name: data.ttl.j2
-    sets:
-      countries: country_codes.csv
+    template_folder: !resolve "{home}/templates"
+    template_name: data.ttl.j2
+    source: !resolve "{input}/data.csv"
+    extra_sources:
+      countries: !resolve "{input}/country_codes.csv"
+    sink: !resolve "{output}/data.ttl"
     mode: no-iteration
-    force: true
 
 rdf_validation_task:
   func: pyshacl
